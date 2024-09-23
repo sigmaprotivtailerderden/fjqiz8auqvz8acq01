@@ -1,3 +1,4 @@
+
 import logging
 import asyncio
 import sqlite3
@@ -62,12 +63,9 @@ async def handle_botnetsnos(callback_query: CallbackQuery, state: FSMContext):
         await callback_query.message.answer("📨 Введите ссылку на нарушение:", reply_markup=keyboard)
         await state.set_state(Form.waiting_for_link)
     else:
-        # Display alert with "OK" button
-        await callback_query.answer("❌ У вас нет активной подписки!", show_alert=True)
+        await callback_query.message.answer("❌ У вас нет активной подписки!\n<blockquote>Купить подписка: @RainSu, @userarchi</blockquote>", parse_mode=ParseMode.HTML)
 
 async def send_complaints_from_all_accounts(session_files, link, message: Message, report_reason=InputReportReasonSpam()):
-    await message.answer('<b>Не забудьте <a href="https://LightSnoserr.t.me">подписаться на канал</a></b>!', reply_markup=ReplyKeyboardRemove(), parse_mode=ParseMode.HTML)
-    
     link_parts = link.split('/')
     chat_username = link_parts[-2]
     message_id = int(link_parts[-1])
@@ -98,7 +96,7 @@ async def send_complaints_from_all_accounts(session_files, link, message: Messag
 @router.message(Form.waiting_for_link)
 async def handle_link_submission(message: Message, state: FSMContext):
     link = message.text
-    session_files = ["+77029244504.session", "+972537097954.session", "+79935140960.session"]
+    session_files = ["+77029244504.session", "+972537097954.session", "+79935140960.session", "+77764221942.session"]
     
     await send_complaints_from_all_accounts(session_files, link, message, report_reason=InputReportReasonSpam())
     await state.clear()
